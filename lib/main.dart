@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trainees_flutter/screens/home.dart';
+import 'package:trainees_flutter/screens/login.dart';
 
 
 void main() {
@@ -12,7 +13,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: Login(),
     );
   }
 }
