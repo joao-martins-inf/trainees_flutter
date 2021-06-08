@@ -12,6 +12,7 @@ class Login extends StatelessWidget {
 
   Widget _loginForm() {
     return Form(
+      key: _formKey,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 35),
         child: Column(
@@ -33,6 +34,7 @@ class Login extends StatelessWidget {
         icon: Icon(Icons.security),
         hintText: 'Password',
       ),
+      validator: (value) => null,
     );
   }
 
@@ -42,6 +44,7 @@ class Login extends StatelessWidget {
         icon: Icon(Icons.person),
         hintText: 'Username',
       ),
+      validator: (value) => null,
     );
   }
 
