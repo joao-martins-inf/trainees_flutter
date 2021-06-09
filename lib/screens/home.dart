@@ -18,9 +18,9 @@ class _HomeState extends State<Home> {
       ];
 
   List<Widget> get _children => [
-        Profile(Colors.red), // home
-        Profile(Colors.green), // QRCode
-        Profile(Colors.black), //Profile
+        Profile(), // home
+        Profile(), // QRCode
+        Profile(), //Profile
       ];
 
   void onTabTapped(int index) {
