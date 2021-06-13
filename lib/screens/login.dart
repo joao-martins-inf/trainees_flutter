@@ -6,11 +6,11 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _loginForm(),
+      body: _loginForm(context),
     );
   }
 
-  Widget _loginForm() {
+  Widget _loginForm(context) {
     return Form(
       key: _formKey,
       child: Padding(
@@ -18,9 +18,13 @@ class Login extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _usernameField(),
+            _emailField(),
             _passwordField(),
-            _loginButton(),
+            SizedBox(height: 10,),
+            _loginButton(context),
+            SizedBox(height: 30),
+            Text('Do not have an account?'),
+            _registerButton(context)
           ],
         ),
       ),
@@ -38,20 +42,27 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _usernameField() {
+  Widget _emailField() {
     return TextFormField(
       decoration: InputDecoration(
         icon: Icon(Icons.person),
-        hintText: 'Username',
+        hintText: 'Email',
       ),
       validator: (value) => null,
     );
   }
 
-  Widget _loginButton() {
+  Widget _loginButton(context) {
     return ElevatedButton(
-      onPressed: () => {},
-      child: Text("login"),
+      onPressed: () => {Navigator.pushNamed(context, '/home')},
+      child: Text("Login"),
+    );
+  }
+
+  Widget _registerButton(context){
+    return ElevatedButton(
+      onPressed: () => {Navigator.pushNamed(context, '/register')},
+      child: Text("Register"),
     );
   }
 }
