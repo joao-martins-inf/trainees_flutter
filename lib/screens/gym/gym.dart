@@ -33,9 +33,9 @@ class _GymState extends State<Gym> {
                     child:
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-              primary: Colors.teal,
+              primary: Colors.blue,
               onPrimary: Colors.white,
-              shadowColor: Colors.red,
+              shadowColor: Colors.blueAccent,
 
 
             ),
@@ -49,9 +49,9 @@ class _GymState extends State<Gym> {
                     child:
                 ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.teal,
+                      primary: Colors.blue,
                       onPrimary: Colors.white,
-                      shadowColor: Colors.red,
+                      shadowColor: Colors.blueAccent,
 
                     ),
                   onPressed: () {},
@@ -60,6 +60,7 @@ class _GymState extends State<Gym> {
                 ),
                 ),
           ]),
+
             Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -69,9 +70,9 @@ class _GymState extends State<Gym> {
 
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.teal,
+                    primary: Colors.blue,
                     onPrimary: Colors.white,
-                    shadowColor: Colors.red,
+                    shadowColor: Colors.blueAccent,
                     ),
                   onPressed: () {Navigator.pushNamed(context, '/scan');},
                   label:
@@ -80,14 +81,15 @@ class _GymState extends State<Gym> {
 
                 ),
               ),
+
               ConstrainedBox(
                 constraints: BoxConstraints.tightFor(width: 150, height: 100),
               child:
                 ElevatedButton.icon(
                  style: ElevatedButton.styleFrom(
-                    primary: Colors.teal,
+                    primary: Colors.blue,
                     onPrimary: Colors.white,
-                    shadowColor: Colors.red,
+                    shadowColor: Colors.blueAccent,
                     elevation: 5,),
                   onPressed: () {Navigator.pushNamed(context, '/evaluate');},
                   label:
