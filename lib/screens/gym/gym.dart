@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:trainees_flutter/screens/gym/qrScanner/qrScanner.dart';
-
 
 class Gym extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() => _GymState();
 
-
 }
 
-
 class _GymState extends State<Gym> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +18,11 @@ class _GymState extends State<Gym> {
           builder: (context, orientation) {
             int count = 2;
             if(orientation == Orientation.landscape){
-              count = 3;
+              count = 4;
             }
             return GridView.count(
               shrinkWrap: true,
-              crossAxisCount: 2,
+              crossAxisCount: count,
 
               children: <Widget>[
                 Column(
@@ -78,7 +73,7 @@ class _GymState extends State<Gym> {
                     onPrimary: Colors.white,
                     shadowColor: Colors.red,
                     ),
-                  onPressed: () {QRViewExample();},
+                  onPressed: () {Navigator.pushNamed(context, '/scan');},
                   label:
                   Text('Scan QR', style: TextStyle(fontSize: 15.0)),
                   icon: Icon(Icons.vertical_align_bottom),
@@ -94,7 +89,7 @@ class _GymState extends State<Gym> {
                     onPrimary: Colors.white,
                     shadowColor: Colors.red,
                     elevation: 5,),
-                  onPressed: () {},
+                  onPressed: () {Navigator.pushNamed(context, '/evaluate');},
                   label:
                   Text('Evaluate', style: TextStyle(fontSize: 15.0)),
                   icon: Icon(Icons.vertical_align_top),

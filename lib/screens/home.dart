@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
 
   List<String> get _appBarTitle => [
         "Home",
-        "Subscribe to gym",
+        "Gym",
         "Profile",
       "History"
       ];
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.qr_code),
-            label: "Subscribe",
+            label: "Gym",
           ),
           BottomNavigationBarItem(
             icon: new Icon(
@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
             label: "Profile",
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.person),
+            icon: new Icon(Icons.list_outlined),
             label: "History",
           ),
           BottomNavigationBarItem(

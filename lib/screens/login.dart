@@ -50,7 +50,7 @@ class Login extends StatelessWidget {
 
   Widget _loginButton() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () => {},
       child: Text("login"),
     );
   }
