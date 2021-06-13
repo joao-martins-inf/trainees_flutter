@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trainees_flutter/screens/profile.dart';
+import 'package:trainees_flutter/screens/gym/gym.dart';
+import 'package:trainees_flutter/screens/history.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,12 +17,14 @@ class _HomeState extends State<Home> {
         "Home",
         "Subscribe to gym",
         "Profile",
+      "History"
       ];
 
   List<Widget> get _children => [
         Profile(), // home
-        Profile(), // QRCode
-        Profile(), //Profile
+    Gym(), // QRCode
+    Profile(),
+    History(),//Profile
       ];
 
   void onTabTapped(int index) {
@@ -58,7 +62,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.person),
-            label: "Profile",
+            label: "History",
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.person),
