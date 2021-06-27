@@ -20,18 +20,25 @@ class Evaluation {
   }
 }
 
-Future<http.Response> createAlbum(String title, double rate) {
+Future<bool> sendEvaluation(String title, double rate) async  {
   final int newRate = rate.toInt();
-  return http.post(
-    Uri.parse('http://116.203.32.183:81/api/gym/2/athlete/1/evaluation'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, dynamic>{
-      'rate': newRate,
-      'comment': title,
-    }),
-  );
+
+  try {
+    http.Response a = await http.post(
+      Uri.http('195.201.90.161:81', '/api/gym/2/athlete/1/evaluation'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'grade': newRate,
+        'comment': title,
+      }),
+    );
+    print(a.statusCode);
+    return true;
+  } catch(e){
+    return false;
+  }
 }
 
 
@@ -51,6 +58,7 @@ class _EvaluateState extends State<Evaluate> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar:(AppBar(
         backgroundColor: Colors.blue,
@@ -123,7 +131,7 @@ class _EvaluateState extends State<Evaluate> {
               child:
               OutlinedButton(
                 onPressed:  () async {
-                  var c = await createAlbum(_controller.text, this.rate);
+                  var c = await sendEvaluation(_controller.text, this.rate);
                   print(c);
                   print(c);
                   print(c);

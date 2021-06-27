@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:trainees_flutter/screens/profile.dart';
 import 'package:trainees_flutter/screens/gym/gym.dart';
 import 'package:trainees_flutter/screens/history.dart';
+import 'package:trainees_flutter/screens/health.dart';
 import 'package:trainees_flutter/screens/settings/settings.dart';
+import 'package:trainees_flutter/screens/map.dart';
+import 'dart:convert';
+
 
 class Home extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -23,10 +28,10 @@ class _HomeState extends State<Home> {
       ];
 
   List<Widget> get _children => [
-        Profile(), // home
+    Profile(), // home
     Gym(), // QRCode
-    Profile(),
-    History(),
+    MapSample(),
+    HealthApp(),
     Settings()//Profile
       ];
 
@@ -38,6 +43,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final token = ModalRoute.of(context)!.settings.arguments ;
+
+
     return Scaffold(
       appBar: AppBar(
         title:  Text(_appBarTitle[_currentIndex]),

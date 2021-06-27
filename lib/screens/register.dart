@@ -1,22 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class User {
 
 
   String name = '';
   String email = '';
+  String username = '';
   DateTime? bornDate;
   String gender = '';
   String password = '';
   String confirmPassword = '';
 
-  save() {
-    print('saving user using a web service');
+  Future<bool> register(String email, String name, String username, String password, String confirmPassword) async  {
+
+    try {
+      http.Response a = await http.post(
+        Uri.http('167.233.9.110', '/api/register/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'first_name': name,
+          'username': username,
+          'password': password,
+          'password2': confirmPassword,
+          'email': email,
+        }),
+      );
+      print(a.statusCode);
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
+
+  save() async {
+    var res = await register(email, name, username, password, confirmPassword);
+    print(res);
   }
   @override
   String toString() {
-    return 'Student: {name: ${name}, age: ${bornDate}, email: ${email}, gender:${gender},'
+    return 'Trainee: {name: ${name}, age: ${bornDate}, email: ${email}, gender:${gender},'
         'password:${password}}';
   }
 }
@@ -27,7 +54,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formRegisterKey = GlobalKey<FormState>();
   final _user = User();
   final TextEditingController _textController = new TextEditingController();
 
@@ -59,7 +86,7 @@ class _RegisterState extends State<Register> {
 
   Widget _registerForm(context) {
     return Form(
-      key: _formKey,
+      key: _formRegisterKey,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 35),
         child: Column(
@@ -67,8 +94,9 @@ class _RegisterState extends State<Register> {
           children: [
             _emailField(),
             _nameField(),
-            _bornDateField(),
-            _genderField(),
+            _userNameField(),
+           // _bornDateField(),
+            //_genderField(),
             _passwordField(),
             _confirmPasswordField(),
             SizedBox(height: 10),
@@ -123,6 +151,19 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  Widget _userNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        icon: Icon(Icons.person),
+        hintText: 'userName',
+      ),
+      validator: (value) => null,
+      onChanged: (value) {
+        setState(() => _user.name = value.toString());
+      },
+    );
+  }
+
   Widget _emailField() {
     return TextFormField(
       decoration: InputDecoration(
@@ -148,7 +189,7 @@ class _RegisterState extends State<Register> {
       },
       keyboardType: TextInputType.datetime,
       decoration: InputDecoration(
-        labelText: "Date",
+        labelText: "Birth Date",
         icon: Icon(Icons.calendar_today),
       ),
 
@@ -165,7 +206,7 @@ class _RegisterState extends State<Register> {
           setState(() => _user.gender = value.toString());
         },
       decoration: InputDecoration(
-        icon: Icon(Icons.person),
+        icon: Icon(Icons.transgender),
         hintText: 'Gender',
       ),
       validator: (value) => _user.gender = value.toString(),
@@ -183,7 +224,7 @@ class _RegisterState extends State<Register> {
     return ElevatedButton(
       onPressed: () {
         print(_user);
-
+        _user.save();
     },
       child: Text("Register"),
     );

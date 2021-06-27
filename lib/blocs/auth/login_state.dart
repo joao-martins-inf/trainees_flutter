@@ -1,23 +1,23 @@
 import 'package:trainees_flutter/blocs/form_submission_status.dart';
 
 class LoginState {
-  final String username;
-  final String password;
-  final FormSubmissionStatus formStatus;
+  final String? email;
+  final String? password;
+  final FormSubmissionStatus? formStatus;
 
   LoginState({
-    this.username = '',
+    this.email = '',
     this.password = '',
     this.formStatus= const InitialFormStatus(),
   });
 
   LoginState copyWith({
-    String username,
-    String password,
-    FormSubmissionStatus formStatus,
+     String? email,
+     String? password,
+    FormSubmissionStatus? formStatus,
   }) {
     return LoginState(
-      username: username ?? this.username,
+      email: email ?? this.email,
       password: password ?? this.password,
       formStatus: formStatus ?? this.formStatus,
     );
