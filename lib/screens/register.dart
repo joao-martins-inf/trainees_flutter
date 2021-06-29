@@ -37,14 +37,13 @@ class User {
     }
   }
 
-  save() async {
-    var res = await register(email, name, username, password, confirmPassword);
-    print(res);
+   save() async {
+   return await register(email, name, username, password, confirmPassword);
   }
   @override
   String toString() {
-    return 'Trainee: {name: ${name}, age: ${bornDate}, email: ${email}, gender:${gender},'
-        'password:${password}}';
+    return 'Trainee: {name: ${name}, birthdate: ${bornDate}, email: ${email}, gender:${gender},'
+        'password:${password}, $username, }';
   }
 }
 
@@ -155,11 +154,11 @@ class _RegisterState extends State<Register> {
     return TextFormField(
       decoration: InputDecoration(
         icon: Icon(Icons.person),
-        hintText: 'userName',
+        hintText: 'Username',
       ),
       validator: (value) => null,
       onChanged: (value) {
-        setState(() => _user.name = value.toString());
+        setState(() => _user.username = value.toString());
       },
     );
   }
@@ -225,8 +224,19 @@ class _RegisterState extends State<Register> {
       onPressed: () {
         print(_user);
         _user.save();
+        _showToast(context, 'Registration with success');
+        Navigator.pushReplacementNamed(context, '/login');
     },
       child: Text("Register"),
+    );
+  }
+
+  void _showToast(BuildContext context, String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content:  Text(msg),
+      ),
     );
   }
 

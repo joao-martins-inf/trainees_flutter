@@ -1,5 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Session {
+  int time = 0;
+
+  Future<bool> createSession(String token,int time) async{
+
+    try {
+      http.Response a = await http.post(
+        Uri.http('167.233.9.110', '/api/sessionsInsert/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Token ' + token,
+        },
+        body: jsonEncode(<String, dynamic>{
+          'duration': time,
+         // 'startDate': new DateTime.now(),
+        }),
+      );
+
+
+      if(a.statusCode == 404){
+        return false;
+      }
+      return true;
+    } catch(e){
+      print(e);
+      return false;
+    }
+  }
+}
 
 class Chronometer extends StatefulWidget {
   static Future<void> navigatorPush(BuildContext context) async {
@@ -17,7 +49,7 @@ class Chronometer extends StatefulWidget {
 
 class _State extends State<Chronometer> {
   final _isHours = true;
-
+  bool isStopped = false;
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countUp,
     onChange: (value) => print('onChange $value'),
@@ -48,6 +80,8 @@ class _State extends State<Chronometer> {
 
   @override
   Widget build(BuildContext context) {
+    final token = ModalRoute.of(context)!.settings.arguments;
+    final _session = Session();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chronometer'),
@@ -253,6 +287,7 @@ class _State extends State<Chronometer> {
                             color: Colors.lightBlue,
                             shape: const StadiumBorder(),
                             onPressed: () async {
+                              isStopped = true;
                               _stopWatchTimer.onExecute
                                   .add(StopWatchExecute.start);
                             },
@@ -269,6 +304,7 @@ class _State extends State<Chronometer> {
                             color: Colors.green,
                             shape: const StadiumBorder(),
                             onPressed: () async {
+                              isStopped = true;
                               _stopWatchTimer.onExecute
                                   .add(StopWatchExecute.stop);
                             },
@@ -296,12 +332,42 @@ class _State extends State<Chronometer> {
                         ),
                       ],
                     ),
+
                   ),
+
+                    ElevatedButton(
+                      onPressed: () async {print(_stopWatchTimer.secondTime.value);
+
+
+                      final res =  await _session.createSession(token.toString(), _stopWatchTimer.secondTime.value );
+                      if(res){
+                          _showToast(context, 'Session saved!');
+                        }else{
+                          _showToast(context, 'Error saving session');
+                        }
+                      },
+                      child: const Text(
+                        'Save Session',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+
+
                 ],
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void _showToast(BuildContext context, String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content:  Text(msg),
+
       ),
     );
   }

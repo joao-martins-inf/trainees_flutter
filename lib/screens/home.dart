@@ -20,17 +20,17 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   List<String> get _appBarTitle => [
-        "Home",
-        "Gym",
         "Profile",
+        "Map",
+        "Gym",
       "History",
     "Settings"
       ];
 
   List<Widget> get _children => [
-    Profile(), // home
-    Gym(), // QRCode
+    Profile(), // home// QRCode
     MapSample(),
+    Gym(),
     HealthApp(),
     Settings()//Profile
       ];
@@ -57,20 +57,22 @@ class _HomeState extends State<Home> {
         onTap: onTabTapped,
         type: BottomNavigationBarType.fixed,
         items: [
+
+
           BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            label: "Home",
+            icon: new Icon(
+              Icons.person_rounded,
+           //   size: 48,
+            ),
+            label: "Profile",
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.map),
+            label: "Map",
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.qr_code),
             label: "Gym",
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(
-              Icons.person_rounded,
-              size: 48,
-            ),
-            label: "Profile",
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.list_outlined),

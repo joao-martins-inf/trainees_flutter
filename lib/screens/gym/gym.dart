@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 class User {
 
   int? gymId;
-
+  int? userId;
+  String? name;
   getInfo(context)async {
     Future<dynamic> getUserInfo(String token) async {
       try {
@@ -16,7 +17,6 @@ class User {
             'Authorization': 'Token ' + token,
           },
         );
-
 
         return a;
       } catch (e) {
@@ -30,8 +30,11 @@ class User {
 
     final res = await getUserInfo(token.toString());
     final decodedRes = jsonDecode(res.body);
-
+  print(decodedRes);
     this.gymId = decodedRes['gym_id'];
+    this.userId = decodedRes['id'];
+    this.name = decodedRes['first_name'];
+
   }
 
 
@@ -62,6 +65,10 @@ class _GymState extends State<Gym> {
             future: _user.getInfo(context),
             builder: (context, AsyncSnapshot<dynamic> snapshot) {
 
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return CircularProgressIndicator();
+              }
+
               if (_user.gymId != null) {
 
                 return Column(
@@ -69,8 +76,8 @@ class _GymState extends State<Gym> {
                     children: [
 
                     Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                      _classesButton(),
-                      _sessionsButton(),
+                      _classesButton(_user, token),
+                      _sessionsButton(token.toString()),
                     ]),
                     SizedBox(
                       height: 30,
@@ -95,7 +102,7 @@ class _GymState extends State<Gym> {
     );
   }
 
-  Widget _classesButton(){
+  Widget _classesButton(_user, token){
     return ConstrainedBox(
       constraints: BoxConstraints.tightFor(width: 150, height: 100),
       child: ElevatedButton.icon(
@@ -105,14 +112,15 @@ class _GymState extends State<Gym> {
           shadowColor: Colors.blueAccent,
           elevation: 5,
         ),
-        onPressed: () {},
-        label: Text('Classes', style: TextStyle(fontSize: 15.0)),
+        onPressed: () { Navigator.pushNamed(context, '/activities', arguments:  '${_user.gymId
+            .toString()},${_user.userId}');},
+        label: Text('Activities', style: TextStyle(fontSize: 15.0)),
         icon: Icon(Icons.add),
       ),
     );
   }
 
-  Widget _sessionsButton(){
+  Widget _sessionsButton(String token){
     return ConstrainedBox(
       constraints: BoxConstraints.tightFor(width: 150, height: 100),
       child: ElevatedButton.icon(
@@ -123,7 +131,7 @@ class _GymState extends State<Gym> {
           elevation: 5,
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/chronometer');
+          Navigator.pushNamed(context, '/chronometer', arguments: token);
         },
         label: Text('Session', style: TextStyle(fontSize: 15.0)),
         icon: Icon(Icons.eject),
@@ -143,8 +151,8 @@ class _GymState extends State<Gym> {
           elevation: 5,
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/scan', arguments: ' ${_user.gymId
-              .toString()},${token.toString()}');
+          Navigator.pushNamed(context, '/scan', arguments: '${_user.gymId
+              .toString()},${token.toString()},${_user.userId},${_user.name}');
         },
         label:  _user.gymId != null ? Text('Scan QR', style: TextStyle(fontSize: 15.0))
             : Text('Sign Up\nGym', style: TextStyle(fontSize: 15.0)),
@@ -152,7 +160,6 @@ class _GymState extends State<Gym> {
       ),
     );
   }
-
 
 
   Widget _evaluate(){
@@ -167,7 +174,7 @@ class _GymState extends State<Gym> {
           elevation: 5,
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/evaluate');
+          Navigator.pushNamed(context, '/evaluate', arguments: '${_user.gymId},${_user.userId}' );
         },
         label: Text('Evaluate', style: TextStyle(fontSize: 15.0)),
         icon: Icon(Icons.vertical_align_top),

@@ -20,12 +20,16 @@ class Evaluation {
   }
 }
 
-Future<bool> sendEvaluation(String title, double rate) async  {
+Future<bool> sendEvaluation(BuildContext context, String title, double rate) async  {
   final int newRate = rate.toInt();
+  final arguments = ModalRoute.of(context)!.settings.arguments;
+  final argsSplitted = arguments.toString().split(",");
+  final gymId = argsSplitted[0].trim();
+  final userId = argsSplitted[1].trim();
 
   try {
     http.Response a = await http.post(
-      Uri.http('195.201.90.161:81', '/api/gym/2/athlete/1/evaluation'),
+      Uri.http('195.201.90.161:81', '/api/gym/$gymId/athlete/$userId/evaluation'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -35,6 +39,10 @@ Future<bool> sendEvaluation(String title, double rate) async  {
       }),
     );
     print(a.statusCode);
+    if(a.statusCode == 404){
+      return false;
+    }
+
     return true;
   } catch(e){
     return false;
@@ -131,10 +139,13 @@ class _EvaluateState extends State<Evaluate> {
               child:
               OutlinedButton(
                 onPressed:  () async {
-                  var c = await sendEvaluation(_controller.text, this.rate);
+                  var c = await sendEvaluation(context,_controller.text, this.rate);
                   print(c);
-                  print(c);
-                  print(c);
+                  if(c){
+                    _showToast(context, 'Evaluation sended :D');
+                  }else{
+                    _showToast(context, 'Error, please try later D:');
+                  }
                 },
                 child: Text("Save evaluation"),
               )
@@ -144,6 +155,13 @@ class _EvaluateState extends State<Evaluate> {
       ),
     );
   }
-
+  void _showToast(BuildContext context, String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content:  Text(msg),
+      ),
+    );
+  }
 }
 

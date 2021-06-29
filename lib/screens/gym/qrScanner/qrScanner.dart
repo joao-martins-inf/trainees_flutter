@@ -13,7 +13,12 @@ class QRViewExample extends StatefulWidget {
 
 class _QRViewExampleState extends State<QRViewExample> {
   String? result;
+  String? tokenState;
+  String? gymIdState;
+  String? userIdState;
+  String? userNameState;
   QRViewController? controller;
+  BuildContext? shareContext;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -24,7 +29,12 @@ class _QRViewExampleState extends State<QRViewExample> {
     final arguments = ModalRoute.of(context)!.settings.arguments;
     //arguments
    final argsSplitted = arguments.toString().split(",");
+    tokenState = argsSplitted[1].trim();
+    gymIdState = argsSplitted[0].trim();
+    userIdState = argsSplitted[2].trim();
+    userNameState = argsSplitted[3].trim();
 
+    shareContext = context;
     return Scaffold(
       appBar:(AppBar(
         backgroundColor: Colors.blue,
@@ -34,7 +44,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       )),
       body: Column(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context,argsSplitted[0], argsSplitted[1] )),
+          Expanded(flex: 4, child: _buildQrView(context,argsSplitted[0].trim(), argsSplitted[1].trim() )),
         ],
       ),
     );
@@ -60,20 +70,47 @@ class _QRViewExampleState extends State<QRViewExample> {
     );
   }
 
+  Future<dynamic> getMachineInfo(String userId, String machineId) async  {
+
+    try {
+      http.Response a = await http.get(
+        //Uri.http('195.201.90.161:81', '/api/athlete/$userId/machine/$machineId')
+          Uri.http('195.201.90.161:81', '/api/athlete/24/machine/1'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+
+      );
+      return a;
+    } catch(e){
+      return false;
+    }
+  }
+
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData)async {
       setState(() {
         result = scanData.code;
       });
-      print(scanData.code);
 
+      if(result != null){
+        controller.stopCamera();
+        var res = await getMachineInfo(userIdState!, result.toString());
+        final resDecoded = jsonDecode(utf8.decode(res.bodyBytes));
+        print(resDecoded);
+        String machineName = resDecoded['machine']['name'].toString();
+        String machineDescription = resDecoded['machine']['description'].toString();
+        final exercises = resDecoded['exercises'];
+        Navigator.pushNamed(shareContext!, '/machineInfo', arguments: '$machineName,$machineDescription,$exercises}');
+        return;
+      }
     });
   }
 
-  Future<bool> setUserGym(String token, int gymId) async  {
+  Future<bool> setUserGym(String token, int gymId, int userId, String name) async  {
 
     try {
       http.Response a = await http.put(
@@ -87,21 +124,42 @@ class _QRViewExampleState extends State<QRViewExample> {
 
         }),
       );
+
+      http.Response b = await http.post(
+    Uri.http('195.201.90.161:81', 'api/gym/$gymId/athlete/'),
+    headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+
+    },
+    body: jsonEncode(<String, dynamic>{
+    'id': userId,
+    'name': name
+    }),
+    );
+
+    print(b.statusCode);
       return true;
     } catch(e){
       return false;
     }
   }
 
-  void _onQRViewSignUp(QRViewController controller) {
+  void _onQRViewSignUp(QRViewController controller)  {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       setState(() {
         result = scanData.code;
       });
-      print(scanData.code);
+      if(result != null){
+        controller.stopCamera();
+        await setUserGym(tokenState!, int.parse(result!), int.parse(userIdState!), userNameState!);
+        Navigator.pushReplacementNamed(shareContext!, '/home', arguments: tokenState);
+
+        return;
+      }
+
 
     });
   }
@@ -111,4 +169,5 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller?.dispose();
     super.dispose();
   }
+
 }
