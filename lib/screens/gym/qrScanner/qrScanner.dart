@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:trainees_flutter/screens/gym/machineInfo/machineInfo.dart';
 
 
 class QRViewExample extends StatefulWidget {
@@ -74,8 +75,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
     try {
       http.Response a = await http.get(
-        //Uri.http('195.201.90.161:81', '/api/athlete/$userId/machine/$machineId')
-          Uri.http('195.201.90.161:81', '/api/athlete/24/machine/1'),
+        Uri.http('195.201.90.161:81', '/api/athlete/$userId/machine/$machineId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -100,16 +100,15 @@ class _QRViewExampleState extends State<QRViewExample> {
         controller.stopCamera();
         var res = await getMachineInfo(userIdState!, result.toString());
         final resDecoded = jsonDecode(utf8.decode(res.bodyBytes));
-        print(resDecoded);
+
         String machineName = resDecoded['machine']['name'].toString();
         String machineDescription = resDecoded['machine']['description'].toString();
         final exercises = resDecoded['exercises'];
-        Navigator.pushNamed(shareContext!, '/machineInfo', arguments: '$machineName,$machineDescription,$exercises}');
+        Navigator.push(shareContext!, MaterialPageRoute(builder: (context) => MachineInfo(name: machineName, description: machineDescription, exercises: exercises)));
         return;
       }
     });
   }
-
   Future<bool> setUserGym(String token, int gymId, int userId, String name) async  {
 
     try {

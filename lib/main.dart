@@ -9,7 +9,7 @@ import 'package:trainees_flutter/screens/gym/qrScanner/qrScanner.dart';
 import 'package:trainees_flutter/screens/gym/gym.dart';
 import 'package:trainees_flutter/screens/gym/evaluate/evaluate.dart';
 import 'package:trainees_flutter/screens/gym/chronometer/chronometer.dart';
-import 'package:trainees_flutter/screens/gym/machineInfo/machineInfo.dart';
+//import 'package:trainees_flutter/screens/gym/machineInfo/machineInfo.dart';
 import 'package:trainees_flutter/screens/gym/activities/activities.dart';
 
 
@@ -38,7 +38,7 @@ class App extends StatelessWidget {
         '/register': (context) => Register(),
         '/chronometer': (context) => Chronometer(),
         '/profile': (context) => Profile(),
-        '/machineInfo': (context) => MachineInfo(),
+       // '/machineInfo': (context) => MachineInfo(),
         '/activities': (context) => ListViewActivities(),
       },
     );
