@@ -30,7 +30,7 @@ class User {
 
     final res = await getUserInfo(token.toString());
     final decodedRes = jsonDecode(res.body);
-  print(decodedRes);
+
     this.gymId = decodedRes['gym_id'];
     this.userId = decodedRes['id'];
     this.name = decodedRes['first_name'];
@@ -88,7 +88,7 @@ class _GymState extends State<Gym> {
                           _scanButton(_user, token),
                           _evaluate() ,
                         ]),
-                    ]  ,
+                    ],
               );
               } else {
              return Column(
