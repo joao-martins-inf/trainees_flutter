@@ -54,14 +54,14 @@ class _HealthAppState extends State<HealthApp> {
       final permissionStatus = Permission.activityRecognition.request();
       if (await permissionStatus.isDenied ||
           await permissionStatus.isPermanentlyDenied) {
-        print("PERMISSION DENIOED");
+
         return;
       }
     }
 
     /// You MUST request access to the data types before reading them
     bool accessWasGranted = await health.requestAuthorization(types);
-    print(accessWasGranted);
+
     int steps = 0;
 
     if (accessWasGranted) {

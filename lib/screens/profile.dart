@@ -35,7 +35,7 @@ class User {
     Future<dynamic> getGymName(int gymId) async {
       try {
         http.Response a = await http.get(
-          Uri.http('195.201.90.161:81', '/api/gym/$gymId'),
+          Uri.http('195.201.90.161:80', '/api/gym/$gymId'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
 

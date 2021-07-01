@@ -134,7 +134,7 @@ class _GymState extends State<Gym> {
         onPressed: () {
           Navigator.pushNamed(context, '/chronometer', arguments: token);
         },
-        label: Text('Session', style: TextStyle(fontSize: 15.0)),
+        label: Text('Trainning\nSession', style: TextStyle(fontSize: 15.0)),
         icon: Icon(Icons.fitness_center),
       ),
     );

@@ -38,7 +38,7 @@ class User {
     Future<dynamic> getGymName(int gymId) async {
       try {
         http.Response a = await http.get(
-          Uri.http('195.201.90.161:81', '/api/gym/$gymId'),
+          Uri.http('195.201.90.161:80', '/api/gym/$gymId'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -65,7 +65,7 @@ class User {
     final gymRes = await getGymName(decodedRes['gym_id']);
 
     final decodedResGym = jsonDecode(gymRes.body);
-    print(decodedResGym);
+
     this.gymName = decodedResGym['name'];
     this.gymLat = decodedResGym['latitude'];
     this.gymLong = decodedResGym['longitude'];
@@ -114,7 +114,7 @@ class ActivityMapState extends State<ActivityMap> {
   @override
   Widget build(BuildContext context) {
   User _user = User();
-print(widget.latitude);
+
     return new Scaffold(
       body: GoogleMap(
         myLocationEnabled: true,

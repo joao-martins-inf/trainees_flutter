@@ -90,13 +90,13 @@ class _SessionOfflineState extends State<SessionOffline> {
     num fac = pow(10, decimals);
     double d = long4;
     d = (d * fac).round() / fac;
-    print("d: $d");
+
 
     getDistanceRun(_numerox);
 
     setState(() {
       _convert = d;
-      print(_convert);
+
     });
   }
 
@@ -234,7 +234,7 @@ class _SessionOfflineState extends State<SessionOffline> {
                 initialData: _stopWatchTimer.minuteTime.value,
                 builder: (context, snap) {
                   final value = snap.data;
-                  print('Listen every minute. $value');
+
                   return Column(
                     children: <Widget>[
                       Padding(
@@ -280,7 +280,7 @@ class _SessionOfflineState extends State<SessionOffline> {
                 initialData: _stopWatchTimer.secondTime.value,
                 builder: (context, snap) {
                   final value = snap.data;
-                  print('Listen every second. $value');
+
                   return Column(
                     children: <Widget>[
                       Padding(
@@ -462,7 +462,7 @@ class _SessionOfflineState extends State<SessionOffline> {
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeOut);
                   });
-                  print('Listen records. $value');
+
                   return ListView.builder(
                     controller: _scrollController,
                     scrollDirection: Axis.vertical,
