@@ -99,11 +99,13 @@ class _QRViewExampleState extends State<QRViewExample> {
       if(result != null){
         controller.stopCamera();
         var res = await getMachineInfo(userIdState!, result.toString());
+
         final resDecoded = jsonDecode(utf8.decode(res.bodyBytes));
 
         String machineName = resDecoded['machine']['name'].toString();
         String machineDescription = resDecoded['machine']['description'].toString();
         final exercises = resDecoded['exercises'];
+
         Navigator.push(shareContext!, MaterialPageRoute(builder: (context) => MachineInfo(name: machineName, description: machineDescription, exercises: exercises)));
         return;
       }
@@ -136,7 +138,6 @@ class _QRViewExampleState extends State<QRViewExample> {
     }),
     );
 
-    print(b.statusCode);
       return true;
     } catch(e){
       return false;

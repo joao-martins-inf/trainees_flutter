@@ -44,7 +44,7 @@ class _SettingsState extends State<Settings> {
                   ),
                   onPressed: () {Navigator.pushNamed(context, '/login');},
                   label: Text('Logout', style: TextStyle(fontSize: 15.0)),
-                  icon: Icon(Icons.eject),
+                  icon: Icon(Icons.logout),
                 ),
               ),
             ]),
@@ -87,17 +87,13 @@ class _SettingsState extends State<Settings> {
           }),
         );
 //SUBSITUIR POR ENDPOINT PARA SAIR DO GINÁSIO
-     /*   http.Response b = await http.post(
-          Uri.http('195.201.90.161:81', 'api/gym/$gymId/athlete/'),
+       http.Response b = await http.delete(
+          Uri.http('195.201.90.161:81', 'api/gym/$gymId/athele/userId'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
 
           },
-          body: jsonEncode(<String, dynamic>{
-            'id': userId,
-            'name': name
-          }),
-        );*/
+        );
       if(res.statusCode == 200){
         _showToast(context, 'Gym quit successfully');
         Navigator.pushReplacementNamed(context, '/home', arguments: token);

@@ -114,7 +114,7 @@ class _State extends State<Chronometer> {
 
     var long3 = (_numerox);
     long3 = double.parse(y.toStringAsFixed(2));
-    var long4 = (long3 / 30000);
+    var long4 = (long3 / 10000);
 
     int decimals = 1;
     num fac = pow(10, decimals);

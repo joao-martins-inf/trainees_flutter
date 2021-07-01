@@ -24,7 +24,7 @@ class User {
             'Authorization': 'Token ' + token,
           },
         );
-        //print(a.statusCode);
+
 
         return a;
       } catch (e) {
@@ -75,7 +75,7 @@ class User {
       BuildContext context) async {
     try {
       final token = ModalRoute.of(context)!.settings.arguments;
-      print(user.height.runtimeType);
+
       http.Response a = await http.put(
         Uri.http('167.233.9.110', '/api/users/updateProfile/'),
         headers: <String, String>{
@@ -99,7 +99,7 @@ class User {
   }
   updateUser(user, updatedUser, context) async {
     final res = await _updateUser(user, updatedUser, context);
-    print(res.statusCode);
+
   }
 
   @override
@@ -168,7 +168,7 @@ class MapScreenState extends State<Profile>
         Column(
           children: <Widget>[
             new Container(
-              height: 250.0,
+              height: 180.0,
               color: Colors.white,
               child: new Column(
                 children: <Widget>[
@@ -188,28 +188,14 @@ class MapScreenState extends State<Profile>
                               decoration: new BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: new DecorationImage(
-                                  image: new ExactAssetImage(
-                                      'assets/images/as.png'),
+                                  image: new NetworkImage(
+                                      'https://images.unsplash.com/photo-1543975200-8e313fb04fc7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80'),
                                   fit: BoxFit.cover,
                                 ),
                               )),
                         ],
                       ),
-                      Padding(
-                          padding: EdgeInsets.only(top: 90.0, right: 100.0),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new CircleAvatar(
-                                backgroundColor: Colors.red,
-                                radius: 25.0,
-                                child: new Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          )),
+
                     ]),
                   )
                 ],
@@ -319,7 +305,7 @@ class MapScreenState extends State<Profile>
                               child: new TextField(
                                 decoration: InputDecoration(
                                   hintText:
-                                  gymName != null ? gymName : 'SignUp to a gym',
+                                  gymName != null ? gymName : 'SignUp to an gym',
                                 ),
                                 enabled: false,
                                 autofocus: !_status,

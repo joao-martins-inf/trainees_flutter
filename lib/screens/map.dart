@@ -27,7 +27,7 @@ class User {
             'Authorization': 'Token ' + token,
           },
         );
-        //print(a.statusCode);
+
 
         return a;
       } catch (e) {
@@ -65,7 +65,7 @@ class User {
     final gymRes = await getGymName(decodedRes['gym_id']);
 
     final decodedResGym = jsonDecode(gymRes.body);
-    print(decodedResGym);
+
     this.gymName = decodedResGym['name'];
     this.gymLat = decodedResGym['latitude'];
     this.gymLong = decodedResGym['longitude'];
@@ -151,6 +151,14 @@ class MapSampleState extends State<MapSample> {
                 ),
 
               ]);
+            } else if(_user.gymLat == null){
+              return FloatingActionButton.extended(
+                onPressed: () {
+                  locatePosition();
+                },
+                label: Text('Go to my location'),
+                icon: Icon(Icons.person_outlined),
+              );
             } else {
               return CircularProgressIndicator();
             }

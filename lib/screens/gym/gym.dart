@@ -114,8 +114,9 @@ class _GymState extends State<Gym> {
         ),
         onPressed: () { Navigator.pushNamed(context, '/activities', arguments:  '${_user.gymId
             .toString()},${_user.userId}');},
-        label: Text('Activities', style: TextStyle(fontSize: 15.0)),
-        icon: Icon(Icons.add),
+        label: Text('Group\nActivities', style: TextStyle(fontSize: 15.0)),
+        icon: Icon(Icons.groups),
+
       ),
     );
   }
@@ -134,7 +135,7 @@ class _GymState extends State<Gym> {
           Navigator.pushNamed(context, '/chronometer', arguments: token);
         },
         label: Text('Session', style: TextStyle(fontSize: 15.0)),
-        icon: Icon(Icons.eject),
+        icon: Icon(Icons.fitness_center),
       ),
     );
   }
@@ -156,7 +157,7 @@ class _GymState extends State<Gym> {
         },
         label:  _user.gymId != null ? Text('Scan QR', style: TextStyle(fontSize: 15.0))
             : Text('Sign Up\nGym', style: TextStyle(fontSize: 15.0)),
-        icon: Icon(Icons.vertical_align_bottom),
+        icon: Icon(Icons.qr_code_scanner_outlined),
       ),
     );
   }
@@ -177,7 +178,7 @@ class _GymState extends State<Gym> {
           Navigator.pushNamed(context, '/evaluate', arguments: '${_user.gymId},${_user.userId}' );
         },
         label: Text('Evaluate', style: TextStyle(fontSize: 15.0)),
-        icon: Icon(Icons.vertical_align_top),
+        icon: Icon(Icons.star_rate),
       ),
     );
   }
