@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class User {
-
-
   String name = '';
   String email = '';
   String username = '';
@@ -14,8 +12,8 @@ class User {
   String password = '';
   String confirmPassword = '';
 
-  Future<bool> register(String email, String name, String username, String password, String confirmPassword) async  {
-
+  Future<bool> register(String email, String name, String username,
+      String password, String confirmPassword) async {
     try {
       http.Response a = await http.post(
         Uri.http('167.233.9.110', '/api/register/'),
@@ -30,16 +28,17 @@ class User {
           'email': email,
         }),
       );
-      print(a.statusCode);
+
       return true;
-    } catch(e){
+    } catch (e) {
       return false;
     }
   }
 
-   save() async {
-   return await register(email, name, username, password, confirmPassword);
+  Future<bool> save() async {
+    return await register(email, name, username, password, confirmPassword);
   }
+
   @override
   String toString() {
     return 'Trainee: {name: ${name}, birthdate: ${bornDate}, email: ${email}, gender:${gender},'
@@ -57,22 +56,18 @@ class _RegisterState extends State<Register> {
   final _user = User();
   final TextEditingController _textController = new TextEditingController();
 
-
   Future _selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
         initialDate: new DateTime.now(),
         firstDate: new DateTime(1900),
-        lastDate: new DateTime.now()
-    );
+        lastDate: new DateTime.now());
 
-    if(picked != null) {
-
+    if (picked != null) {
       setState(() {
         _user.bornDate = picked;
         _textController.text = DateFormat('dd-MM-yyyy').format(picked);
       });
-
     }
   }
 
@@ -94,13 +89,15 @@ class _RegisterState extends State<Register> {
             _emailField(),
             _nameField(),
             _userNameField(),
-           // _bornDateField(),
+            // _bornDateField(),
             //_genderField(),
             _passwordField(),
             _confirmPasswordField(),
             SizedBox(height: 10),
             _registerButton(context),
-            SizedBox(height: 30, ),
+            SizedBox(
+              height: 30,
+            ),
             Text('Do you already have an account?'),
             _loginButton(context),
           ],
@@ -164,46 +161,53 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _emailField() {
+    final RegExp emailRegex = new RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     return TextFormField(
       decoration: InputDecoration(
         icon: Icon(Icons.person),
         hintText: 'Email',
       ),
-      validator: (value) => null,
+      validator: (value) {
+        if (!emailRegex.hasMatch(value!)) {
+          return 'Please enter valid email';
+        }
+        return null;
+      },
       onChanged: (value) {
         setState(() => _user.email = value.toString());
       },
     );
   }
+
   Widget _bornDateField() {
     return TextFormField(
       controller: _textController,
-      onTap: (){
+      onTap: () {
         // Below line stops keyboard from appearing
         FocusScope.of(context).requestFocus(new FocusNode());
 
         // Show Date Picker Here
         _selectDate();
-
       },
       keyboardType: TextInputType.datetime,
       decoration: InputDecoration(
         labelText: "Birth Date",
         icon: Icon(Icons.calendar_today),
       ),
-
     );
   }
+
   Widget _genderField() {
     return DropdownButtonFormField(
-      items:[
-        DropdownMenuItem(child: Text("Male"), value:'male'),
-        DropdownMenuItem(child: Text("Female"), value:'female'),
-        DropdownMenuItem(child: Text("Undefined"), value:'undefined'),
+      items: [
+        DropdownMenuItem(child: Text("Male"), value: 'male'),
+        DropdownMenuItem(child: Text("Female"), value: 'female'),
+        DropdownMenuItem(child: Text("Undefined"), value: 'undefined'),
       ],
-        onChanged: (value) {
-          setState(() => _user.gender = value.toString());
-        },
+      onChanged: (value) {
+        setState(() => _user.gender = value.toString());
+      },
       decoration: InputDecoration(
         icon: Icon(Icons.transgender),
         hintText: 'Gender',
@@ -219,14 +223,17 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget _registerButton(context){
+  Widget _registerButton(context) {
     return ElevatedButton(
-      onPressed: () {
-        print(_user);
-        _user.save();
-        _showToast(context, 'Registration with success');
-        Navigator.pushReplacementNamed(context, '/login');
-    },
+      onPressed: () async {
+        bool res = await _user.save();
+        if (res == true) {
+          _showToast(context, 'Registration with success');
+          Navigator.pushReplacementNamed(context, '/login');
+        } else {
+          _showToast(context, 'Insucess registration :(');
+        }
+      },
       child: Text("Register"),
     );
   }
@@ -235,10 +242,8 @@ class _RegisterState extends State<Register> {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content:  Text(msg),
+        content: Text(msg),
       ),
     );
   }
-
 }
-

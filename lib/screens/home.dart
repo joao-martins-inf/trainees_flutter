@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
     Profile(), // home// QRCode
     MapSample(),
     Gym(),
-    HealthApp(),
+    History(),
     Settings()//Profile
       ];
 
@@ -57,7 +57,6 @@ class _HomeState extends State<Home> {
         onTap: onTabTapped,
         type: BottomNavigationBarType.fixed,
         items: [
-
 
           BottomNavigationBarItem(
             icon: new Icon(

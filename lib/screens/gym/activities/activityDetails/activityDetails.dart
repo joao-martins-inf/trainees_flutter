@@ -12,7 +12,9 @@ class Activity {
   final String activityDate;
   final double latitude;
   final double longitude;
-  Activity(this.name, this.description, this.activityDate, this.latitude, this.longitude);
+  final int id;
+  Activity(this.name, this.description, this.activityDate, this.latitude,
+      this.longitude, this.id);
 }
 
 class ActivityInfo extends StatelessWidget {
@@ -21,21 +23,20 @@ class ActivityInfo extends StatelessWidget {
   final String activityDate;
   final double latitude;
   final double longitude;
-
+  final int id;
 
   ActivityInfo(
       {Key? key,
-        required this.name,
-        required this.description,
-        required this.activityDate,
+      required this.name,
+      required this.description,
+      required this.activityDate,
       required this.latitude,
-      required this.longitude})
+      required this.longitude,
+      required this.id})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: (AppBar(
         backgroundColor: Colors.blue,
@@ -54,7 +55,7 @@ class ActivityInfo extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Padding(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Text('Description',
                         style: TextStyle(
                             fontSize: 16.0,
@@ -67,12 +68,11 @@ class ActivityInfo extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(description)),
               ),
-
               Align(
                 alignment: Alignment.center,
                 child: Padding(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                     child: Text('Activity Date',
                         style: TextStyle(
                             fontSize: 16.0,
@@ -83,29 +83,28 @@ class ActivityInfo extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(activityDate.split('T')[0])),
+                    child: Text(
+                        '${activityDate.split('T')[0]} ${activityDate.split('T')[1].substring(0, 5)}')),
               ),
-          Align(
-            alignment: Alignment.center,
-            child:
-              Padding(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: Text('Localization',
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)))),
+              Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: Text('Localization',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)))),
               SizedBox(
-                width: 200,  // or use fixed size like 200
+                width: 200, // or use fixed size like 200
                 height: MediaQuery.of(context).size.height - 280,
-                child:ActivityMap(latitude: latitude, longitude: longitude),)
+                child: ActivityMap(latitude: latitude, longitude: longitude),
+              )
             ],
           ),
         ),
       ),
     );
   }
-
-
 }

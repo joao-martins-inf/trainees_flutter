@@ -29,19 +29,22 @@ class User {
           'password': password,
         }),
       );
+
       return a;
     } catch(e){
       return false;
     }
   }
 
-  auth(context)async {
+ Future<bool> auth(context)async {
      var res = await login(email, password);
-
       if(res.statusCode == 200){
+
         Navigator.pushReplacementNamed(context, '/home', arguments: jsonDecode(
             res.body)['token'].toString());
+        return true;
       }
+      return false;
   }
   @override
   String toString() {
@@ -126,15 +129,21 @@ class _LoginState extends State<Login>  {
     );
   }
 
-  void login(context){
-    print(_user);
+  void login(context)async {
+
    /* context.read<LoginBloc>().add(
         LoginPasswordChanged(password: _user.password),
         LoginEmailChanged(email: _user.email),
         LoginSubmitted(),
     );*/
-     _user.auth(context);
 
+
+   bool res = await _user.auth(context);
+   if( res == true) {
+     _showToast(context, "Login with success!");
+   }else {
+     _showToast(context, "Login no successfull!");
+   }
     //Navigator.pushNamed(context, '/home');
   }
 
@@ -143,7 +152,7 @@ class _LoginState extends State<Login>  {
       return state.formStatus is FormSubmitting
         ? CircularProgressIndicator()
         :*/return ElevatedButton(
-          onPressed: () => {login(context)},
+          onPressed: () { login(context);},
           child: Text("Login"),
       );
     //});
@@ -156,8 +165,12 @@ class _LoginState extends State<Login>  {
     );
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  void _showToast(BuildContext context, String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(msg),
+      ),
+    );
   }
 }
