@@ -75,12 +75,17 @@ class _QRViewExampleState extends State<QRViewExample> {
 
     try {
       http.Response a = await http.get(
-        Uri.http('195.201.90.161:81', '/api/athlete/$userId/machine/$machineId'),
+        Uri.http('195.201.90.161:80', '/api/athlete/$userId/machine/$machineId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
 
       );
+
+      if(a.statusCode >= 400){
+        return false;
+      }
+
       return a;
     } catch(e){
       return false;
@@ -99,12 +104,18 @@ class _QRViewExampleState extends State<QRViewExample> {
       if(result != null){
         controller.stopCamera();
         var res = await getMachineInfo(userIdState!, result.toString());
+        if(res ==false){
+          _showToast(context, "Try again late");
 
+          return;
+        }
         final resDecoded = jsonDecode(utf8.decode(res.bodyBytes));
 
         String machineName = resDecoded['machine']['name'].toString();
         String machineDescription = resDecoded['machine']['description'].toString();
         final exercises = resDecoded['exercises'];
+
+        _showToast(context, "Read with success :D");
 
         Navigator.push(shareContext!, MaterialPageRoute(builder: (context) => MachineInfo(name: machineName, description: machineDescription, exercises: exercises)));
         return;
@@ -127,7 +138,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       );
 
       http.Response b = await http.post(
-    Uri.http('195.201.90.161:81', 'api/gym/$gymId/athlete/'),
+    Uri.http('195.201.90.161:80', 'api/gym/$gymId/athlete/'),
     headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
 
@@ -138,6 +149,11 @@ class _QRViewExampleState extends State<QRViewExample> {
     }),
     );
 
+      if(a.statusCode >= 400 || b.statusCode >= 400){
+        _showToast(context, "Try again late");
+        return false;
+      }
+      _showToast(context, "Read with success :D");
       return true;
     } catch(e){
       return false;
@@ -152,10 +168,14 @@ class _QRViewExampleState extends State<QRViewExample> {
       setState(() {
         result = scanData.code;
       });
+
       if(result != null){
         controller.stopCamera();
-        await setUserGym(tokenState!, int.parse(result!), int.parse(userIdState!), userNameState!);
-        Navigator.pushReplacementNamed(shareContext!, '/home', arguments: tokenState);
+       bool res =  await setUserGym(tokenState!, int.parse(result!), int.parse(userIdState!), userNameState!);
+        if(res ==false){
+          return;
+        }
+       Navigator.pushReplacementNamed(shareContext!, '/home', arguments: tokenState);
 
         return;
       }
@@ -168,6 +188,15 @@ class _QRViewExampleState extends State<QRViewExample> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  void _showToast(BuildContext context, String msg) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content:  Text(msg),
+      ),
+    );
   }
 
 }

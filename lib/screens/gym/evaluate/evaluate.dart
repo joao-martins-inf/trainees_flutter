@@ -29,7 +29,7 @@ Future<bool> sendEvaluation(BuildContext context, String title, double rate) asy
 
   try {
     http.Response a = await http.post(
-      Uri.http('195.201.90.161:81', '/api/gym/$gymId/athlete/$userId/evaluation'),
+      Uri.http('195.201.90.161:80', '/api/gym/$gymId/athlete/$userId/evaluation'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -38,7 +38,7 @@ Future<bool> sendEvaluation(BuildContext context, String title, double rate) asy
         'comment': title,
       }),
     );
-    print(a.statusCode);
+
     if(a.statusCode == 404){
       return false;
     }
@@ -140,7 +140,7 @@ class _EvaluateState extends State<Evaluate> {
               OutlinedButton(
                 onPressed:  () async {
                   var c = await sendEvaluation(context,_controller.text, this.rate);
-                  print(c);
+
                   if(c){
                     _showToast(context, 'Evaluation sended :D');
                   }else{

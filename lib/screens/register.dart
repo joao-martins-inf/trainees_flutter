@@ -29,6 +29,10 @@ class User {
         }),
       );
 
+      if(a.statusCode >= 400){
+        return false;
+      }
+
       return true;
     } catch (e) {
       return false;
@@ -227,11 +231,12 @@ class _RegisterState extends State<Register> {
     return ElevatedButton(
       onPressed: () async {
         bool res = await _user.save();
+
         if (res == true) {
           _showToast(context, 'Registration with success');
           Navigator.pushReplacementNamed(context, '/login');
         } else {
-          _showToast(context, 'Insucess registration :(');
+          _showToast(context, 'Insuccess registration :(');
         }
       },
       child: Text("Register"),

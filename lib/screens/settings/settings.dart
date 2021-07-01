@@ -86,17 +86,21 @@ class _SettingsState extends State<Settings> {
             'gym_id': null,
           }),
         );
-//SUBSITUIR POR ENDPOINT PARA SAIR DO GINÁSIO
+
        http.Response b = await http.delete(
-          Uri.http('195.201.90.161:81', 'api/gym/$gymId/athele/userId'),
+          Uri.http('195.201.90.161:80', 'api/gym/$gymId/athele/userId'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
 
           },
         );
-      if(res.statusCode == 200){
+      if(res.statusCode == 200 && b.statusCode == 200){
         _showToast(context, 'Gym quit successfully');
         Navigator.pushReplacementNamed(context, '/home', arguments: token);
+      }else{
+        _showToast(context, 'Try later');
+
+        return false;
       }
 
         return true;

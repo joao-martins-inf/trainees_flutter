@@ -28,7 +28,7 @@ class MachineInfo extends StatelessWidget {
   Widget build(BuildContext context) {
 
     exercises.sort((a,b) => a['difficulty'].compareTo(b['difficulty']));
-    print(exercises);
+
     return Scaffold(
       appBar: (AppBar(
         backgroundColor: Colors.blue,
@@ -74,7 +74,7 @@ class MachineInfo extends StatelessWidget {
   }
 
   Widget _exercisesView(context, exercises) {
-    print(exercises.length);
+
     return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),

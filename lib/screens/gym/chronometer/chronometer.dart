@@ -31,7 +31,6 @@ class Session {
       }
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -589,7 +588,7 @@ class _State extends State<Chronometer> {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      print(_stopWatchTimer.secondTime.value);
+
 
                       final res = await _session.createSession(
                           token.toString(), _stopWatchTimer.secondTime.value, double.parse(_calories), double.parse(_km), int.parse(_todaySteps));

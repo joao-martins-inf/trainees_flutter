@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trainees_flutter/blocs/auth/auth_repository.dart';
 import 'package:trainees_flutter/screens/home.dart';
 import 'package:trainees_flutter/screens/login.dart';
+import 'package:trainees_flutter/screens/offline/sessionOffline.dart';
 import 'package:trainees_flutter/screens/register.dart';
 import 'package:trainees_flutter/screens/profile.dart';
 import 'package:trainees_flutter/screens/gym/qrScanner/qrScanner.dart';
@@ -40,6 +41,7 @@ class App extends StatelessWidget {
         '/profile': (context) => Profile(),
        // '/machineInfo': (context) => MachineInfo(),
         '/activities': (context) => ListViewActivities(),
+        '/sessionOffline': (context) => SessionOffline(),
       },
     );
   }

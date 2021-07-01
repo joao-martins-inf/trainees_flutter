@@ -14,7 +14,7 @@ class Activity {
         'gymId': gymId,
       };
       http.Response res = await http.get(
-        Uri.http('195.201.90.161:81', 'api/activity', queryParameters),
+        Uri.http('195.201.90.161:80', 'api/activity', queryParameters),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -28,15 +28,12 @@ class Activity {
 
   Future<dynamic> getUserActivities(String userId) async {
     try {
-
       http.Response res = await http.get(
-        Uri.http('195.201.90.161:81', '/api/activity/athlete/$userId'),
+        Uri.http('195.201.90.161:80', '/api/activity/athlete/$userId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-
-
       return res;
     } catch (e) {
       return false;
@@ -199,7 +196,6 @@ class _ListViewActivitiesState extends State<ListViewActivities> {
       var exists = false;
       _userActivitiesList![value]['registered_users'].forEach((element) {
         if (element['athlete_id'] == userId && element['present'] == true) {
-          print("OAOAOAOA");
           exists = true;
         }
       });
@@ -318,7 +314,7 @@ class _ListViewActivitiesState extends State<ListViewActivities> {
 
       if (distanceMinor50Km) {
         http.Response b = await http.post(
-          Uri.http('195.201.90.161:81',
+          Uri.http('195.201.90.161:80',
               'api/activity/${activity['id']}/athlete/$userId/presence'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -327,7 +323,7 @@ class _ListViewActivitiesState extends State<ListViewActivities> {
 
         await _activities._getActivities(gymId, userId);
 
-        print(b.statusCode);
+
       } else {
         _showToast(context, "You are too far :(");
 
@@ -346,7 +342,7 @@ class _ListViewActivitiesState extends State<ListViewActivities> {
     try {
       http.Response b = await http.post(
         Uri.http(
-            '195.201.90.161:81', 'api/activity/$activityId/athlete/$userId'),
+            '195.201.90.161:80', 'api/activity/$activityId/athlete/$userId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -364,7 +360,7 @@ class _ListViewActivitiesState extends State<ListViewActivities> {
     try {
       http.Response b = await http.delete(
         Uri.http(
-            '195.201.90.161:81', 'api/activity/$activityId/athlete/$userId'),
+            '195.201.90.161:80', 'api/activity/$activityId/athlete/$userId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
