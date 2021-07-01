@@ -94,7 +94,9 @@ class _LoginState extends State<Login>  {
             _loginButton(context),
             SizedBox(height: 30),
             Text('Do not have an account?'),
-            _registerButton(context)
+            _registerButton(context),
+            SizedBox(height: 70),
+            _sessionOffline(context)
           ],
         ),
       ),
@@ -163,6 +165,13 @@ class _LoginState extends State<Login>  {
       onPressed: () => {Navigator.pushNamed(context, '/register')},
       child: Text("Register"),
     );
+  }
+
+  Widget _sessionOffline(context){
+    return Column(children:[Text('Offline? Try our Trainning Session module'),ElevatedButton(
+        onPressed: () => {Navigator.pushNamed(context, '/sessionOffline')},
+    child: Text("Trainning Session"),
+    ), ]);
   }
 
   void _showToast(BuildContext context, String msg) {
